@@ -1,0 +1,12 @@
+<%- include('../partials/header', { pageTitle: 'Lỗi đặt đơn (400)' }) %>
+
+<main class="container" style="padding: 56px 20px; max-width: 560px; text-align: center;">
+  <div class="sf-card">
+    <span class="sf-badge muted">HTTP 400 BAD REQUEST</span>
+    <h1 style="font-size: 1.45rem; margin: 12px 0;">Thông tin đặt hàng chưa hợp lệ</h1>
+    <p style="color: var(--sf-danger); font-weight: 600; margin-bottom: 24px;"><%= message %></p>
+    <a href="/dishes" class="sf-btn sf-btn-primary">← Quay lại Giỏ hàng</a>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,252 @@
+<%- include('../partials/header', { pageTitle: 'Thực Đơn Nhà Hàng Ngon', q }) %>
+
+<section class="sf-hero">
+  <div class="container sf-hero-grid">
+    <img
+      src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80"
+      alt="Bếp Ngon ShopeeFood Flagship"
+      class="sf-hero-cover"
+    />
+    <div>
+      <div class="sf-tags-row">
+        <span class="sf-tag preferred">⚡ Quán Yêu Thích+</span>
+        <span class="sf-tag freeship">FREESHIP XTRA</span>
+        <span class="sf-tag open">● Đang mở cửa (07:00 - 22:30)</span>
+      </div>
+      <h1 class="sf-hero-title">Bếp Việt Signature - Phở, Cơm Tấm & Trà Trái Cây</h1>
+      <div class="sf-hero-meta">
+        <span>⭐ <strong>4.9</strong> (2.4k+ đánh giá)</span>
+        <span>📍 227 Nguyễn Văn Cừ, Quận 5, TP.HCM</span>
+        <span>⏱️ Giao trong 15 - 20 phút</span>
+      </div>
+      <div class="sf-vouchers">
+        <button type="button" class="sf-voucher-pill" data-voucher-code="SHOPEE20" style="cursor:pointer;">
+          🎟️ Nhập <strong>SHOPEE20</strong>: Giảm 20% tối đa 35k (Bấm để áp mã)
+        </button>
+        <button type="button" class="sf-voucher-pill" data-voucher-code="FREESHIP" style="cursor:pointer;">
+          🛵 Nhập <strong>FREESHIP</strong>: Miễn phí giao hàng 16k
+        </button>
+        <button type="button" class="sf-voucher-pill" data-voucher-code="KTPM3" style="cursor:pointer;">
+          🔥 Nhập <strong>KTPM3</strong>: Giảm ngay 25k
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+  <div class="sf-store-layout">
+    <!-- Left Column: Categories + Dishes + Chefs + Ingredients -->
+    <div>
+      <div class="sf-categories">
+        <a
+          href="/dishes<%= q ? '?q=' + encodeURIComponent(q) : '' %>"
+          class="sf-cat-pill <%= !selectedCategory ? 'active' : '' %>"
+        >
+          Tất cả (<%= allDishes.length %>)
+        </a>
+        <% categories.forEach(cat => { %>
+          <a
+            href="/dishes?category=<%= encodeURIComponent(cat) %><%= q ? '&q=' + encodeURIComponent(q) : '' %>"
+            class="sf-cat-pill <%= selectedCategory === cat ? 'active' : '' %>"
+          >
+            <%= cat %>
+          </a>
+        <% }) %>
+      </div>
+
+      <% if (q || selectedCategory) { %>
+        <div style="margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            Đang lọc:
+            <% if (q) { %><strong>Từ khóa "<%= q %>"</strong><% } %>
+            <% if (selectedCategory) { %> • Danh mục <strong><%= selectedCategory %></strong><% } %>
+            (<%= dishes.length %> kết quả)
+          </div>
+          <a href="/dishes" style="color: var(--sf-primary); font-weight: 600; font-size: 0.88rem;">✕ Xóa bộ lọc</a>
+        </div>
+      <% } %>
+
+      <% if (dishes.length === 0) { %>
+        <div class="sf-card" style="text-align: center; padding: 48px 20px;">
+          <div style="font-size: 2.5rem; margin-bottom: 8px;">🔍</div>
+          <h3 style="margin: 0 0 8px;">Không tìm thấy món ăn phù hợp</h3>
+          <p style="color: var(--sf-muted); margin-bottom: 16px;">Thử tìm với từ khóa khác hoặc xem toàn bộ thực đơn của quán.</p>
+          <a href="/dishes" class="sf-btn sf-btn-primary">Xem tất cả món ăn</a>
+        </div>
+      <% } else { %>
+        <div class="sf-dish-grid">
+          <% dishes.forEach(d => { %>
+            <% const discountPct = d.originalPrice && d.originalPrice > d.price ? Math.round((1 - d.price / d.originalPrice) * 100) : 0; %>
+            <article class="sf-dish-card">
+              <a href="/dishes/<%= d.id %>" class="sf-dish-thumb-wrap">
+                <img src="<%= d.imageUrl %>" alt="<%= d.name %>" class="sf-dish-thumb" loading="lazy" />
+                <% if (discountPct > 0) { %>
+                  <span class="sf-discount-badge">-<%= discountPct %>% DEAL</span>
+                <% } %>
+                <% if (!d.available) { %>
+                  <div class="sf-soldout-overlay">Tạm hết hàng</div>
+                <% } %>
+              </a>
+              <div class="sf-dish-body">
+                <div class="sf-dish-cat"><%= d.category %></div>
+                <a href="/dishes/<%= d.id %>">
+                  <h2 class="sf-dish-title"><%= d.name %></h2>
+                </a>
+                <p class="sf-dish-desc"><%= d.description %></p>
+                <div class="sf-dish-stats">
+                  <span>⭐ <%= d.rating %></span>
+                  <span>• Đã bán <%= d.soldCount %>+</span>
+                  <span>• ⏱️ <%= d.prepTimeMin %>p</span>
+                </div>
+                <div class="sf-dish-footer">
+                  <div>
+                    <span class="sf-price-current"><%= formatVND(d.price) %></span>
+                    <% if (d.originalPrice && d.originalPrice > d.price) { %>
+                      <span class="sf-price-old"><%= formatVND(d.originalPrice) %></span>
+                    <% } %>
+                  </div>
+                  <button
+                    type="button"
+                    class="sf-add-btn"
+                    data-add-dish
+                    data-id="<%= d.id %>"
+                    data-name="<%= d.name %>"
+                    data-price="<%= d.price %>"
+                    <%= !d.available ? 'disabled' : '' %>
+                  >
+                    <%= d.available ? '+ Thêm' : 'Hết món' %>
+                  </button>
+                </div>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <!-- Đội ngũ Đầu Bếp (Chefs) -->
+      <div class="sf-section-title">
+        <span>👨‍🍳 Đội Ngũ Bếp Trưởng (Chefs)</span>
+        <a href="/admin/chefs" class="sf-btn sf-btn-outline" style="font-size:0.8rem;">Quản lý Đầu bếp →</a>
+      </div>
+      <div class="sf-chef-grid">
+        <% chefs.forEach(c => { %>
+          <div class="sf-chef-card">
+            <img src="<%= c.avatarUrl %>" alt="<%= c.name %>" class="sf-chef-avatar" />
+            <div>
+              <div style="font-weight: 700; font-size: 1rem;"><%= c.name %></div>
+              <div style="color: var(--sf-primary); font-size: 0.82rem; font-weight: 600; margin-bottom: 4px;">
+                <%= c.specialty %>
+              </div>
+              <div style="color: var(--sf-muted); font-size: 0.78rem;">
+                🏅 <%= c.experience %> năm kinh nghiệm
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Nguyên liệu tươi mỗi ngày (Ingredients) -->
+      <div class="sf-section-title">
+        <span>🥬 Nguyên Liệu Tươi Chuẩn Truy Xuất Nguồn Gốc</span>
+        <a href="/admin/ingredients" class="sf-btn sf-btn-outline" style="font-size:0.8rem;">Quản lý Nguyên liệu →</a>
+      </div>
+      <div class="sf-card" style="padding: 16px;">
+        <div class="sf-table-wrap">
+          <table class="sf-table">
+            <thead>
+              <tr>
+                <th>Nguyên liệu</th>
+                <th>Đơn vị</th>
+                <th>Tồn kho bếp</th>
+                <th>Nguồn gốc xuất xứ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% ingredients.forEach(ing => { %>
+                <tr>
+                  <td><strong><%= ing.name %></strong></td>
+                  <td><span class="sf-badge muted"><%= ing.unit %></span></td>
+                  <td><%= ing.stock %> <%= ing.unit %></td>
+                  <td><%= ing.origin %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Sticky ShopeeFood Shopping Cart & Checkout Form -->
+    <aside id="sf-cart-box" class="sf-cart-panel">
+      <div class="sf-cart-header">
+        <h3>🛒 Giỏ hàng của bạn</h3>
+        <button type="button" id="sf-cart-clear-btn" class="sf-cart-clear">Xóa tất cả</button>
+      </div>
+
+      <div id="sf-cart-empty" style="text-align: center; padding: 28px 10px; color: var(--sf-muted);">
+        <div style="font-size: 2.2rem; margin-bottom: 6px;">🥡</div>
+        <p style="margin: 0; font-size: 0.88rem;">Chưa có món nào trong giỏ.<br/>Hãy bấm <strong>"+ Thêm"</strong> ở món ăn bạn thích nhé!</p>
+      </div>
+
+      <div id="sf-cart-items"></div>
+
+      <form id="sf-checkout-form" method="POST" action="/orders" style="display: none;">
+        <input type="hidden" name="itemsJson" id="sf-items-json" value="[]" />
+
+        <div class="sf-cart-summary">
+          <div class="sf-summary-row">
+            <span>Tạm tính</span>
+            <strong id="sf-cart-subtotal">0đ</strong>
+          </div>
+          <div class="sf-summary-row">
+            <span>Phí giao hàng (2.1km)</span>
+            <strong>16.000đ</strong>
+          </div>
+          <div class="sf-summary-row" style="color: var(--sf-green);">
+            <span>Voucher giảm giá</span>
+            <strong id="sf-cart-discount">-0đ</strong>
+          </div>
+          <div class="sf-summary-row total">
+            <span>Tổng thanh toán</span>
+            <span id="sf-cart-total">0đ</span>
+          </div>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--sf-border); margin: 14px 0;" />
+
+        <div class="sf-form-group">
+          <label>Mã giảm giá (SHOPEE20, FREESHIP, KTPM3)</label>
+          <input type="text" name="voucherCode" id="sf-voucher-input" class="sf-input" placeholder="Nhập hoặc bấm chọn voucher ở trên" />
+        </div>
+
+        <div class="sf-form-group">
+          <label>Họ tên người nhận *</label>
+          <input type="text" name="customerName" class="sf-input" required placeholder="Nguyễn Văn A" />
+        </div>
+
+        <div class="sf-form-group">
+          <label>Số điện thoại *</label>
+          <input type="text" name="customerPhone" class="sf-input" required placeholder="0901234567" />
+        </div>
+
+        <div class="sf-form-group">
+          <label>Địa chỉ giao hàng *</label>
+          <input type="text" name="address" class="sf-input" required placeholder="KTX Khu B ĐHQG / 227 Nguyễn Văn Cừ" />
+        </div>
+
+        <div class="sf-form-group">
+          <label>Ghi chú cho quán / tài xế</label>
+          <input type="text" name="note" class="sf-input" placeholder="Lấy thêm ớt, không hành..." />
+        </div>
+
+        <button type="submit" class="sf-btn sf-btn-primary sf-btn-block" style="padding: 12px; font-size: 0.98rem;">
+          🛵 Đặt Đơn Ngay (Thanh toán khi nhận)
+        </button>
+      </form>
+    </aside>
+  </div>
+</main>
+
+<script src="/public/cart.js"></script>
+<%- include('../partials/footer') %>

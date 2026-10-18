@@ -1,0 +1,59 @@
+<%- include('../../partials/admin-header', { pageTitle: mode === 'create' ? 'Thêm Đầu Bếp' : 'Sửa Đầu Bếp #' + chefId, activeTab: 'chefs' }) %>
+
+<main class="container" style="max-width: 680px; padding-bottom: 60px;">
+  <div style="margin-bottom: 16px;">
+    <a href="/admin/chefs" class="sf-btn sf-btn-outline">← Quay lại danh sách đầu bếp</a>
+  </div>
+
+  <div class="sf-card">
+    <h1 style="margin: 0 0 6px; font-size: 1.45rem;">
+      <%= mode === 'create' ? '➕ Thêm Đầu Bếp Mới' : '✏️ Cập Nhật Đầu Bếp #' + chefId %>
+    </h1>
+    <p style="margin: 0 0 20px; color: var(--sf-muted); font-size: 0.88rem;">
+      Method: <code><%= mode === 'create' ? 'POST /admin/chefs' : 'POST /admin/chefs/' + chefId + '?_method=PATCH' %></code>
+    </p>
+
+    <% if (Object.keys(errors).length > 0) { %>
+      <div class="sf-alert-error">⚠️ Dữ liệu nhập chưa hợp lệ (HTTP 400 Bad Request).</div>
+    <% } %>
+
+    <form method="POST" action="<%= mode === 'create' ? '/admin/chefs' : '/admin/chefs/' + chefId + '?_method=PATCH' %>">
+      <div class="sf-form-group">
+        <label for="name">Họ tên đầu bếp *</label>
+        <input id="name" type="text" name="name" class="sf-input" value="<%= values.name %>" placeholder="Chef Nguyễn Hoàng Nam" />
+        <% if (errors.name) { %><div class="sf-field-error"><%= errors.name %></div><% } %>
+      </div>
+
+      <div class="sf-form-group">
+        <label for="specialty">Chuyên môn ẩm thực (Specialty) *</label>
+        <input id="specialty" type="text" name="specialty" class="sf-input" value="<%= values.specialty %>" placeholder="Ẩm thực truyền thống Bắc Bộ" />
+        <% if (errors.specialty) { %><div class="sf-field-error"><%= errors.specialty %></div><% } %>
+      </div>
+
+      <div class="sf-form-group">
+        <label for="experience">Số năm kinh nghiệm</label>
+        <input id="experience" type="number" name="experience" class="sf-input" value="<%= values.experience %>" />
+        <% if (errors.experience) { %><div class="sf-field-error"><%= errors.experience %></div><% } %>
+      </div>
+
+      <div class="sf-form-group">
+        <label for="avatarUrl">URL ảnh đại diện</label>
+        <input id="avatarUrl" type="text" name="avatarUrl" class="sf-input" value="<%= values.avatarUrl %>" placeholder="https://images.unsplash.com/..." />
+      </div>
+
+      <div class="sf-form-group">
+        <label for="bio">Tiểu sử ngắn</label>
+        <textarea id="bio" name="bio" rows="3" class="sf-textarea"><%= values.bio %></textarea>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button type="submit" class="sf-btn sf-btn-primary">
+          <%= mode === 'create' ? 'Tạo Đầu Bếp (POST)' : 'Lưu Thay Đổi (PATCH)' %>
+        </button>
+        <a href="/admin/chefs" class="sf-btn sf-btn-outline">Hủy</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

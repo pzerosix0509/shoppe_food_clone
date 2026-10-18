@@ -1,0 +1,31 @@
+<%- include('../../partials/admin-header', { pageTitle: 'Chi tiết Món #' + dish.id, activeTab: 'dishes' }) %>
+
+<main class="container" style="max-width: 780px; padding-bottom: 60px;">
+  <div style="margin-bottom: 16px; display: flex; justify-content: space-between;">
+    <a href="/admin/dishes" class="sf-btn sf-btn-outline">← Danh sách món ăn (Admin)</a>
+    <a href="/dishes/<%= dish.id %>" class="sf-btn sf-btn-outline">👁️ Xem trên giao diện Khách hàng</a>
+  </div>
+
+  <div class="sf-card">
+    <div style="display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: start;">
+      <img src="<%= dish.imageUrl %>" alt="<%= dish.name %>" style="width: 100%; height: 190px; object-fit: cover; border-radius: 10px;" />
+      <div>
+        <span class="sf-badge <%= dish.available ? 'success' : 'muted' %>">
+          <%= dish.available ? 'Đang mở bán' : 'Tạm ngưng' %>
+        </span>
+        <h1 style="margin: 8px 0; font-size: 1.5rem;">#<%= dish.id %> — <%= dish.name %></h1>
+        <p style="color: var(--sf-muted); margin-bottom: 14px;"><%= dish.description %></p>
+        <div style="margin-bottom: 8px;"><strong>Danh mục:</strong> <%= dish.category %></div>
+        <div style="margin-bottom: 8px;"><strong>Giá bán:</strong> <span style="color: var(--sf-primary); font-weight: 800;"><%= formatVND(dish.price) %></span></div>
+        <div style="margin-bottom: 18px;"><strong>Thời gian chuẩn bị:</strong> <%= dish.prepTimeMin %> phút</div>
+
+        <div style="display: flex; gap: 10px;">
+          <a href="/admin/dishes/<%= dish.id %>/edit" class="sf-btn sf-btn-primary">✏️ Sửa món ăn</a>
+          <a href="/admin/dishes/<%= dish.id %>/delete" class="sf-btn sf-btn-danger">🗑️ Xóa món ăn</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

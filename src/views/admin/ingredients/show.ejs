@@ -1,0 +1,22 @@
+<%- include('../../partials/admin-header', { pageTitle: 'Chi tiết Nguyên Liệu #' + ingredient.id, activeTab: 'ingredients' }) %>
+
+<main class="container" style="max-width: 640px; padding-bottom: 60px;">
+  <div style="margin-bottom: 16px;">
+    <a href="/admin/ingredients" class="sf-btn sf-btn-outline">← Danh sách nguyên liệu</a>
+  </div>
+
+  <div class="sf-card">
+    <span class="sf-badge success">Nguyên liệu #<%= ingredient.id %></span>
+    <h1 style="margin: 8px 0 12px; font-size: 1.5rem;"><%= ingredient.name %></h1>
+    <div style="margin-bottom: 8px;"><strong>Đơn vị tính:</strong> <%= ingredient.unit %></div>
+    <div style="margin-bottom: 8px;"><strong>Tồn kho hiện tại:</strong> <%= ingredient.stock %> <%= ingredient.unit %></div>
+    <div style="margin-bottom: 18px;"><strong>Nguồn gốc xuất xứ:</strong> <%= ingredient.origin %></div>
+
+    <div style="display: flex; gap: 10px;">
+      <a href="/admin/ingredients/<%= ingredient.id %>/edit" class="sf-btn sf-btn-primary">✏️ Sửa nguyên liệu</a>
+      <a href="/admin/ingredients/<%= ingredient.id %>/delete" class="sf-btn sf-btn-danger">🗑️ Xóa nguyên liệu</a>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

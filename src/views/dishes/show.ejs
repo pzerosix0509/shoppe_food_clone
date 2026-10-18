@@ -1,0 +1,87 @@
+<%- include('../partials/header', { pageTitle: dish.name }) %>
+
+<main class="container" style="padding-top: 28px; padding-bottom: 60px;">
+  <div style="margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center;">
+    <a href="/dishes" class="sf-btn sf-btn-outline">← Quay lại Thực đơn</a>
+    <a href="/admin/dishes/<%= dish.id %>/edit" class="sf-btn sf-btn-outline">✏️ Chỉnh sửa món này trong Admin</a>
+  </div>
+
+  <div class="sf-card" style="display: grid; grid-template-columns: minmax(280px, 440px) 1fr; gap: 32px; align-items: center;">
+    <div style="position: relative; border-radius: 12px; overflow: hidden;">
+      <img src="<%= dish.imageUrl %>" alt="<%= dish.name %>" style="width: 100%; height: 320px; object-fit: cover; display: block;" />
+      <% if (!dish.available) { %>
+        <div class="sf-soldout-overlay">Tạm hết hàng</div>
+      <% } %>
+    </div>
+
+    <div>
+      <div class="sf-tags-row">
+        <span class="sf-tag preferred">Mã món #<%= dish.id %></span>
+        <span class="sf-tag open"><%= dish.category %></span>
+        <% if (dish.available) { %>
+          <span class="sf-badge success">● Đang mở bán</span>
+        <% } else { %>
+          <span class="sf-badge muted">● Tạm ngưng phục vụ</span>
+        <% } %>
+      </div>
+
+      <h1 style="margin: 8px 0 12px; font-size: 1.85rem;"><%= dish.name %></h1>
+      <p style="color: var(--sf-muted); font-size: 1rem; margin-bottom: 18px;"><%= dish.description %></p>
+
+      <div style="display: flex; gap: 20px; color: var(--sf-muted); font-size: 0.9rem; margin-bottom: 20px;">
+        <span>⭐ <strong><%= dish.rating %></strong>/5.0</span>
+        <span>🔥 Đã bán <strong><%= dish.soldCount %>+</strong> phần</span>
+        <span>⏱️ Chuẩn bị: <strong><%= dish.prepTimeMin %> phút</strong></span>
+      </div>
+
+      <div style="background: var(--sf-primary-light); padding: 16px 20px; border-radius: 12px; margin-bottom: 22px; display: flex; align-items: baseline; gap: 12px;">
+        <span style="font-size: 1.75rem; font-weight: 800; color: var(--sf-primary);"><%= formatVND(dish.price) %></span>
+        <% if (dish.originalPrice && dish.originalPrice > dish.price) { %>
+          <span style="text-decoration: line-through; color: #94a3b8; font-size: 1rem;"><%= formatVND(dish.originalPrice) %></span>
+        <% } %>
+      </div>
+
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <button
+          type="button"
+          class="sf-btn sf-btn-primary"
+          style="padding: 12px 24px; font-size: 1rem;"
+          data-add-dish
+          data-id="<%= dish.id %>"
+          data-name="<%= dish.name %>"
+          data-price="<%= dish.price %>"
+          <%= !dish.available ? 'disabled' : '' %>
+        >
+          <%= dish.available ? '🛒 Thêm vào Giỏ hàng ShopeeFood' : 'Món này tạm hết hàng' %>
+        </button>
+        <a href="/dishes#sf-cart-box" class="sf-btn sf-btn-outline" style="padding: 12px 20px;">
+          Đi tới Giỏ hàng & Thanh toán →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <% if (relatedDishes && relatedDishes.length > 0) { %>
+    <h2 class="sf-section-title">🍽️ Các món cùng danh mục "<%= dish.category %>"</h2>
+    <div class="sf-dish-grid">
+      <% relatedDishes.forEach(d => { %>
+        <article class="sf-dish-card">
+          <a href="/dishes/<%= d.id %>" class="sf-dish-thumb-wrap">
+            <img src="<%= d.imageUrl %>" alt="<%= d.name %>" class="sf-dish-thumb" />
+          </a>
+          <div class="sf-dish-body">
+            <div class="sf-dish-cat"><%= d.category %></div>
+            <a href="/dishes/<%= d.id %>"><h3 class="sf-dish-title"><%= d.name %></h3></a>
+            <div class="sf-dish-footer">
+              <span class="sf-price-current"><%= formatVND(d.price) %></span>
+              <a href="/dishes/<%= d.id %>" class="sf-btn sf-btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Xem chi tiết</a>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } %>
+</main>
+
+<script src="/public/cart.js"></script>
+<%- include('../partials/footer') %>

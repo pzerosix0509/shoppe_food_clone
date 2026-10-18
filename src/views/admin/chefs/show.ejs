@@ -1,0 +1,23 @@
+<%- include('../../partials/admin-header', { pageTitle: 'Chi tiết Đầu Bếp #' + chef.id, activeTab: 'chefs' }) %>
+
+<main class="container" style="max-width: 680px; padding-bottom: 60px;">
+  <div style="margin-bottom: 16px;">
+    <a href="/admin/chefs" class="sf-btn sf-btn-outline">← Danh sách đầu bếp</a>
+  </div>
+
+  <div class="sf-card" style="display: flex; gap: 24px; align-items: center;">
+    <img src="<%= chef.avatarUrl %>" alt="<%= chef.name %>" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--sf-primary);" />
+    <div>
+      <h1 style="margin: 0 0 6px; font-size: 1.5rem;">#<%= chef.id %> — <%= chef.name %></h1>
+      <div style="color: var(--sf-primary); font-weight: 700; margin-bottom: 6px;"><%= chef.specialty %></div>
+      <div style="color: var(--sf-muted); font-size: 0.9rem; margin-bottom: 10px;">🏅 Kinh nghiệm: <%= chef.experience %> năm</div>
+      <p style="margin: 0 0 16px;"><%= chef.bio %></p>
+      <div style="display: flex; gap: 10px;">
+        <a href="/admin/chefs/<%= chef.id %>/edit" class="sf-btn sf-btn-primary">✏️ Sửa</a>
+        <a href="/admin/chefs/<%= chef.id %>/delete" class="sf-btn sf-btn-danger">🗑️ Xóa</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

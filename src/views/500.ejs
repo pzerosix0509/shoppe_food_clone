@@ -1,0 +1,15 @@
+<%- include('partials/header', { pageTitle: '500 Lỗi Hệ Thống' }) %>
+
+<main class="container" style="padding: 64px 20px; text-align: center;">
+  <div class="sf-card" style="max-width: 560px; margin: 0 auto; padding: 40px 28px;">
+    <div style="font-size: 3.5rem; margin-bottom: 12px;">⚠️</div>
+    <span class="sf-badge muted" style="margin-bottom: 12px;">HTTP 500 INTERNAL SERVER ERROR</span>
+    <h1 style="margin: 8px 0 12px; font-size: 1.65rem;">Hệ thống đang bận</h1>
+    <p style="color: var(--sf-muted); margin-bottom: 24px;">
+      Đã xảy ra sự cố ngoài ý muốn trên máy chủ. Chi tiết lỗi đã được ghi nhận vào server log để bảo mật thông tin CSDL.
+    </p>
+    <a href="/dishes" class="sf-btn sf-btn-primary">← Quay về Trang chủ</a>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

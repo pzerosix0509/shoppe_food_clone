@@ -1,0 +1,105 @@
+<%- include('../partials/admin-header', { pageTitle: 'Tổng quan Quản trị', activeTab: 'dashboard' }) %>
+
+<main class="container" style="padding-bottom: 60px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 24px;">
+    <div>
+      <h1 style="margin: 0 0 4px; font-size: 1.65rem;">Bảng điều khiển Quản trị Nhà Hàng (SSR CRUD)</h1>
+      <p style="margin: 0; color: var(--sf-muted); font-size: 0.9rem;">
+        Driver hiện tại: <strong><%= dbDriver %></strong> • Chuẩn HTTP Method: <code>GET / POST / PATCH / DELETE</code> + <code>303 See Other</code>
+      </p>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <a href="/admin/dishes/new" class="sf-btn sf-btn-primary">+ Thêm Món Ăn</a>
+      <a href="/admin/chefs/new" class="sf-btn sf-btn-outline">+ Thêm Đầu Bếp</a>
+      <a href="/admin/ingredients/new" class="sf-btn sf-btn-outline">+ Thêm Nguyên Liệu</a>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-bottom: 28px;">
+    <div class="sf-card" style="margin-bottom: 0;">
+      <div style="color: var(--sf-muted); font-size: 0.85rem; font-weight: 600;">TỔNG SỐ MÓN ĂN (DISHES)</div>
+      <div style="font-size: 2.2rem; font-weight: 800; color: var(--sf-primary); margin: 6px 0;"><%= dishes.length %></div>
+      <a href="/admin/dishes" style="color: var(--sf-primary); font-weight: 600; font-size: 0.88rem;">Quản lý CRUD Món ăn →</a>
+    </div>
+
+    <div class="sf-card" style="margin-bottom: 0;">
+      <div style="color: var(--sf-muted); font-size: 0.85rem; font-weight: 600;">ĐỘI NGŨ ĐẦU BẾP (CHEFS)</div>
+      <div style="font-size: 2.2rem; font-weight: 800; color: #1d4ed8; margin: 6px 0;"><%= chefs.length %></div>
+      <a href="/admin/chefs" style="color: #1d4ed8; font-weight: 600; font-size: 0.88rem;">Quản lý CRUD Đầu bếp →</a>
+    </div>
+
+    <div class="sf-card" style="margin-bottom: 0;">
+      <div style="color: var(--sf-muted); font-size: 0.85rem; font-weight: 600;">KHO NGUYÊN LIỆU (INGREDIENTS)</div>
+      <div style="font-size: 2.2rem; font-weight: 800; color: var(--sf-green); margin: 6px 0;"><%= ingredients.length %></div>
+      <a href="/admin/ingredients" style="color: var(--sf-green); font-weight: 600; font-size: 0.88rem;">Quản lý CRUD Nguyên liệu →</a>
+    </div>
+
+    <div class="sf-card" style="margin-bottom: 0;">
+      <div style="color: var(--sf-muted); font-size: 0.85rem; font-weight: 600;">ĐƠN ĐẶT HÀNG (ORDERS)</div>
+      <div style="font-size: 2.2rem; font-weight: 800; color: #7c3aed; margin: 6px 0;"><%= orders.length %></div>
+      <a href="/orders" style="color: #7c3aed; font-weight: 600; font-size: 0.88rem;">Xem danh sách đơn hàng →</a>
+    </div>
+  </div>
+
+  <div class="sf-card">
+    <h2 style="margin: 0 0 12px; font-size: 1.2rem;">Bảng đối chiếu Route CRUD chuẩn Block #5</h2>
+    <div class="sf-table-wrap">
+      <table class="sf-table">
+        <thead>
+          <tr>
+            <th>Thao tác</th>
+            <th>HTTP Method</th>
+            <th>Đường dẫn (Món ăn / Đầu bếp / Nguyên liệu)</th>
+            <th>Phản hồi HTTP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Danh sách</td>
+            <td><code>GET</code></td>
+            <td><code>/admin/dishes</code> | <code>/admin/chefs</code> | <code>/admin/ingredients</code></td>
+            <td><code>200 OK</code></td>
+          </tr>
+          <tr>
+            <td>Mở form thêm</td>
+            <td><code>GET</code></td>
+            <td><code>/admin/dishes/new</code> | <code>/admin/chefs/new</code> | <code>/admin/ingredients/new</code></td>
+            <td><code>200 OK</code></td>
+          </tr>
+          <tr>
+            <td>Thêm mới</td>
+            <td><code>POST</code></td>
+            <td><code>/admin/dishes</code> | <code>/admin/chefs</code> | <code>/admin/ingredients</code></td>
+            <td><code>303 See Other</code> hoặc <code>400 Bad Request</code></td>
+          </tr>
+          <tr>
+            <td>Mở form sửa</td>
+            <td><code>GET</code></td>
+            <td><code>/admin/{resource}/:id/edit</code></td>
+            <td><code>200 OK</code> hoặc <code>404 Not Found</code></td>
+          </tr>
+          <tr>
+            <td>Cập nhật (qua method-override)</td>
+            <td><code>PATCH</code></td>
+            <td><code>/admin/{resource}/:id?_method=PATCH</code></td>
+            <td><code>303 See Other</code>, <code>400</code> hoặc <code>404</code></td>
+          </tr>
+          <tr>
+            <td>Trang xác nhận xóa</td>
+            <td><code>GET</code></td>
+            <td><code>/admin/{resource}/:id/delete</code></td>
+            <td><code>200 OK</code> hoặc <code>404 Not Found</code></td>
+          </tr>
+          <tr>
+            <td>Thực hiện xóa (qua method-override)</td>
+            <td><code>DELETE</code></td>
+            <td><code>/admin/{resource}/:id?_method=DELETE</code></td>
+            <td><code>303 See Other</code> hoặc <code>404 Not Found</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle + ' | ShopeeFood' : 'ShopeeFood - Giao Đồ Ăn Siêu Tốc' %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/styles.css" />
+</head>
+<body>
+  <header class="sf-navbar">
+    <div class="container sf-navbar-inner">
+      <a href="/dishes" class="sf-brand">
+        <span>🛍️ ShopeeFood</span>
+        <span class="sf-brand-badge">Yêu Thích+</span>
+      </a>
+
+      <form method="GET" action="/dishes" class="sf-search-form">
+        <input
+          type="text"
+          name="q"
+          placeholder="Tìm món phở bò, cơm tấm, trà đào..."
+          value="<%= typeof q !== 'undefined' ? q : '' %>"
+        />
+        <button type="submit">Tìm kiếm</button>
+      </form>
+
+      <nav class="sf-nav-links">
+        <a href="/dishes" class="sf-nav-btn">🍽️ Thực đơn</a>
+        <a href="/orders" class="sf-nav-btn">🛵 Đơn hàng</a>
+        <a href="/admin" class="sf-nav-btn">⚙️ Quản trị (Admin CRUD)</a>
+        <a href="/dishes#sf-cart-box" class="sf-nav-btn cart-trigger">
+          🛒 Giỏ hàng <span class="sf-cart-count" data-cart-count>0</span>
+        </a>
+      </nav>
+    </div>
+  </header>

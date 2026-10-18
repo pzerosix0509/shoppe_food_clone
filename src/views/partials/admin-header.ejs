@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle + ' | ShopeeFood Merchant Admin' : 'Quản trị Nhà Hàng | ShopeeFood Partner' %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/styles.css" />
+</head>
+<body>
+  <header class="admin-header-bar">
+    <div class="container admin-nav">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <a href="/admin" style="font-weight:800;font-size:1.2rem;color:#fff;">
+          🧑‍🍳 ShopeeFood Merchant Portal
+        </a>
+        <span class="sf-badge success">SSR CRUD + PRG 303</span>
+      </div>
+
+      <nav class="admin-tabs">
+        <a href="/admin" class="admin-tab <%= typeof activeTab !== 'undefined' && activeTab === 'dashboard' ? 'active' : '' %>">Tổng quan</a>
+        <a href="/admin/dishes" class="admin-tab <%= typeof activeTab !== 'undefined' && activeTab === 'dishes' ? 'active' : '' %>">Món ăn (Dishes)</a>
+        <a href="/admin/chefs" class="admin-tab <%= typeof activeTab !== 'undefined' && activeTab === 'chefs' ? 'active' : '' %>">Đầu bếp (Chefs)</a>
+        <a href="/admin/ingredients" class="admin-tab <%= typeof activeTab !== 'undefined' && activeTab === 'ingredients' ? 'active' : '' %>">Nguyên liệu (Ingredients)</a>
+        <a href="/dishes" class="admin-tab" style="background:#ee4d2d;color:#fff;">↗ Xem Cửa Hàng ShopeeFood</a>
+      </nav>
+    </div>
+  </header>

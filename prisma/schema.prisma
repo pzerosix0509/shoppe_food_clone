@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Dish {
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String?
+  price         Int
+  originalPrice Int?
+  category      String?
+  imageUrl      String?
+  rating        Float    @default(4.8)
+  soldCount     Int      @default(0)
+  prepTimeMin   Int      @default(15)
+  available     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  @@map("dishes")
+}
+
+model Chef {
+  id          Int      @id @default(autoincrement())
+  name        String
+  specialty   String
+  experience  Int      @default(3)
+  bio         String?
+  avatarUrl   String?
+  createdAt   DateTime @default(now())
+
+  @@map("chefs")
+}
+
+model Ingredient {
+  id          Int      @id @default(autoincrement())
+  name        String
+  unit        String
+  stock       Int      @default(100)
+  origin      String?
+  createdAt   DateTime @default(now())
+
+  @@map("ingredients")
+}
+
+model Order {
+  id            Int      @id @default(autoincrement())
+  customerName  String
+  customerPhone String
+  address       String
+  note          String?
+  voucherCode   String?
+  subtotal      Int
+  shippingFee   Int
+  discount      Int      @default(0)
+  total         Int
+  status        String   @default("Đang chuẩn bị món")
+  itemsJson     String
+  createdAt     DateTime @default(now())
+
+  @@map("orders")
+}

@@ -1,0 +1,75 @@
+<%- include('../../partials/admin-header', { pageTitle: 'Quản lý Món ăn', activeTab: 'dishes' }) %>
+
+<main class="container" style="padding-bottom: 60px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+    <div>
+      <h1 style="margin: 0; font-size: 1.55rem;">🍽️ Quản lý Món Ăn (Dishes CRUD)</h1>
+      <p style="margin: 4px 0 0; color: var(--sf-muted); font-size: 0.88rem;">Tổng cộng <%= dishes.length %> món ăn trong cơ sở dữ liệu</p>
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <form method="GET" action="/admin/dishes" style="display: flex; gap: 6px;">
+        <input type="text" name="q" value="<%= q %>" placeholder="Tìm theo tên món..." class="sf-input" style="width: 220px;" />
+        <button type="submit" class="sf-btn sf-btn-outline">Tìm</button>
+      </form>
+      <a href="/admin/dishes/new" class="sf-btn sf-btn-primary">+ Thêm món ăn mới</a>
+    </div>
+  </div>
+
+  <div class="sf-card">
+    <div class="sf-table-wrap">
+      <table class="sf-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Món ăn</th>
+            <th>Danh mục</th>
+            <th>Giá bán</th>
+            <th>Trạng thái</th>
+            <th>Thao tác (SSR Links)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (dishes.length === 0) { %>
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 28px; color: var(--sf-muted);">Không có món ăn nào khớp điều kiện.</td>
+            </tr>
+          <% } %>
+          <% dishes.forEach(d => { %>
+            <tr>
+              <td><strong>#<%= d.id %></strong></td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <img src="<%= d.imageUrl %>" alt="<%= d.name %>" style="width: 46px; height: 46px; border-radius: 8px; object-fit: cover;" />
+                  <div>
+                    <a href="/admin/dishes/<%= d.id %>" style="font-weight: 700; color: var(--sf-primary);"><%= d.name %></a>
+                    <div style="font-size: 0.78rem; color: var(--sf-muted); max-width: 340px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      <%= d.description %>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td><%= d.category %></td>
+              <td><strong style="color: var(--sf-primary);"><%= formatVND(d.price) %></strong></td>
+              <td>
+                <% if (d.available) { %>
+                  <span class="sf-badge success">Còn món</span>
+                <% } else { %>
+                  <span class="sf-badge muted">Tạm hết</span>
+                <% } %>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <a href="/admin/dishes/<%= d.id %>" class="sf-btn sf-btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Chi tiết</a>
+                  <a href="/admin/dishes/<%= d.id %>/edit" class="sf-btn sf-btn-outline" style="padding: 5px 10px; font-size: 0.8rem;">Sửa</a>
+                  <a href="/admin/dishes/<%= d.id %>/delete" class="sf-btn sf-btn-danger" style="padding: 5px 10px; font-size: 0.8rem;">Xóa</a>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

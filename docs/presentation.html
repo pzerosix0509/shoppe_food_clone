@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thuyết trình Block #5 - ShopeeFood Restaurant CRUD WebApp</title>
+  <link rel="stylesheet" href="../src/public/styles.css" />
+  <style>
+    body { padding: 40px 20px; background: #0f172a; color: #f8fafc; }
+    .slide {
+      max-width: 960px;
+      margin: 0 auto 32px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 18px;
+      padding: 36px 42px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+    .slide h1, .slide h2 { color: #ff7337; margin-top: 0; }
+    .slide code { background: #0f172a; color: #38bdf8; padding: 3px 7px; border-radius: 6px; }
+    .slide table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+    .slide th, .slide td { border: 1px solid #334155; padding: 10px 14px; text-align: left; }
+    .slide th { background: #0f172a; color: #cbd5e1; }
+  </style>
+</head>
+<body>
+  <section class="slide">
+    <span class="sf-badge success">DAY 03 • BLOCK #5</span>
+    <h1 style="font-size: 2.2rem; margin-top: 10px;">ShopeeFood Restaurant CRUD WebApp</h1>
+    <p>Ứng dụng Web Nhà Hàng kết hợp trải nghiệm đặt món <strong>ShopeeFood</strong> và kiến trúc quản trị <strong>SSR + ORM + Post/Redirect/Get (303)</strong>.</p>
+  </section>
+
+  <section class="slide">
+    <h2>1. Mô hình Dữ liệu (Database & Models)</h2>
+    <ul>
+      <li><strong>Dish (Món ăn)</strong>: <code>id</code>, <code>name</code>, <code>description</code>, <code>price</code>, <code>originalPrice</code>, <code>category</code>, <code>available</code></li>
+      <li><strong>Chef (Đầu bếp)</strong>: <code>id</code>, <code>name</code>, <code>specialty</code>, <code>experience</code>, <code>bio</code></li>
+      <li><strong>Ingredient (Nguyên liệu)</strong>: <code>id</code>, <code>name</code>, <code>unit</code>, <code>stock</code>, <code>origin</code></li>
+      <li><strong>Order (Đơn hàng ShopeeFood)</strong>: Lưu thông tin khách đặt, danh sách món, mã giảm giá và trạng thái giao hàng.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>2. Luồng Request & Chuẩn HTTP Method</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Thao tác</th>
+          <th>HTTP Method</th>
+          <th>URL</th>
+          <th>Status Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Danh sách & Tìm kiếm</td><td><code>GET</code></td><td><code>/dishes?q=...</code>, <code>/admin/{resource}</code></td><td><code>200 OK</code></td></tr>
+        <tr><td>Chi tiết bản ghi</td><td><code>GET</code></td><td><code>/dishes/:id</code>, <code>/admin/{resource}/:id</code></td><td><code>200 OK</code> / <code>404</code></td></tr>
+        <tr><td>Thêm bản ghi mới</td><td><code>POST</code></td><td><code>/admin/{resource}</code></td><td><code>303 See Other</code> / <code>400</code></td></tr>
+        <tr><td>Cập nhật bản ghi</td><td><code>PATCH</code></td><td><code>/admin/{resource}/:id?_method=PATCH</code></td><td><code>303</code> / <code>400</code> / <code>404</code></td></tr>
+        <tr><td>Trang xác nhận xóa</td><td><code>GET</code></td><td><code>/admin/{resource}/:id/delete</code></td><td><code>200 OK</code> / <code>404</code></td></tr>
+        <tr><td>Xóa bản ghi</td><td><code>DELETE</code></td><td><code>/admin/{resource}/:id?_method=DELETE</code></td><td><code>303 See Other</code> / <code>404</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="slide">
+    <h2>3. Kiểm tra Bảo mật & Chất lượng Mã nguồn</h2>
+    <ul>
+      <li><strong>Chống SQL Injection</strong>: 100% truy vấn sử dụng Parameterized Queries (<code>?</code> trên SQLite, <code>$1, $2</code> trên PostgreSQL).</li>
+      <li><strong>Chống Mass Assignment</strong>: Dữ liệu từ <code>req.body</code> đi qua hàm validate độc lập trong <code>src/validators.js</code> trước khi gọi model.</li>
+      <li><strong>Bảo vệ Chuỗi kết nối</strong>: <code>DATABASE_URL</code> nằm trong <code>.env</code> (đã thêm vào <code>.gitignore</code>), không bao giờ truyền ra template EJS.</li>
+    </ul>
+  </section>
+</body>
+</html>

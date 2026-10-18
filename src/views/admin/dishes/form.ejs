@@ -1,0 +1,95 @@
+<%- include('../../partials/admin-header', { pageTitle: mode === 'create' ? 'Thêm Món Ăn Mới' : 'Sửa Món Ăn #' + dishId, activeTab: 'dishes' }) %>
+
+<main class="container" style="max-width: 720px; padding-bottom: 60px;">
+  <div style="margin-bottom: 16px;">
+    <a href="/admin/dishes" class="sf-btn sf-btn-outline">← Quay lại danh sách món ăn</a>
+  </div>
+
+  <div class="sf-card">
+    <h1 style="margin: 0 0 6px; font-size: 1.45rem;">
+      <%= mode === 'create' ? '➕ Thêm Món Ăn Mới' : '✏️ Cập Nhật Món Ăn #' + dishId %>
+    </h1>
+    <p style="margin: 0 0 20px; color: var(--sf-muted); font-size: 0.88rem;">
+      Method sử dụng: <code><%= mode === 'create' ? 'POST /admin/dishes' : 'POST /admin/dishes/' + dishId + '?_method=PATCH' %></code>
+    </p>
+
+    <% if (Object.keys(errors).length > 0) { %>
+      <div class="sf-alert-error">
+        ⚠️ Dữ liệu nhập chưa hợp lệ (HTTP 400 Bad Request). Vui lòng kiểm tra lại các trường bên dưới.
+      </div>
+    <% } %>
+
+    <form
+      method="POST"
+      action="<%= mode === 'create' ? '/admin/dishes' : '/admin/dishes/' + dishId + '?_method=PATCH' %>"
+    >
+      <div class="sf-form-group">
+        <label for="name">Tên món ăn *</label>
+        <input id="name" type="text" name="name" class="sf-input" value="<%= values.name %>" placeholder="Ví dụ: Phở Bò Tái Lăn" />
+        <% if (errors.name) { %><div class="sf-field-error"><%= errors.name %></div><% } %>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="sf-form-group">
+          <label for="price">Giá bán (VNĐ) *</label>
+          <input id="price" type="number" name="price" class="sf-input" value="<%= values.price %>" placeholder="65000" />
+          <% if (errors.price) { %><div class="sf-field-error"><%= errors.price %></div><% } %>
+        </div>
+
+        <div class="sf-form-group">
+          <label for="originalPrice">Giá gốc trước giảm (VNĐ)</label>
+          <input id="originalPrice" type="number" name="originalPrice" class="sf-input" value="<%= values.originalPrice %>" placeholder="79000" />
+          <% if (errors.originalPrice) { %><div class="sf-field-error"><%= errors.originalPrice %></div><% } %>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="sf-form-group">
+          <label for="category">Danh mục</label>
+          <select id="category" name="category" class="sf-select">
+            <% ['Món Nước', 'Cơm Ngon', 'Ăn Vặt & Bánh Mì', 'Đồ Uống & Tráng Miệng'].forEach(cat => { %>
+              <option value="<%= cat %>" <%= values.category === cat ? 'selected' : '' %>><%= cat %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="sf-form-group">
+          <label for="prepTimeMin">Thời gian chuẩn bị (phút)</label>
+          <input id="prepTimeMin" type="number" name="prepTimeMin" class="sf-input" value="<%= values.prepTimeMin %>" />
+          <% if (errors.prepTimeMin) { %><div class="sf-field-error"><%= errors.prepTimeMin %></div><% } %>
+        </div>
+      </div>
+
+      <div class="sf-form-group">
+        <label for="imageUrl">URL hình ảnh món ăn</label>
+        <input id="imageUrl" type="text" name="imageUrl" class="sf-input" value="<%= values.imageUrl %>" placeholder="https://images.unsplash.com/..." />
+      </div>
+
+      <div class="sf-form-group">
+        <label for="description">Mô tả chi tiết</label>
+        <textarea id="description" name="description" rows="3" class="sf-textarea" placeholder="Mô tả hương vị, thành phần của món ăn..."><%= values.description %></textarea>
+      </div>
+
+      <div class="sf-form-group" style="display: flex; align-items: center; gap: 8px;">
+        <input
+          id="available"
+          type="checkbox"
+          name="available"
+          value="true"
+          <%= values.available ? 'checked' : '' %>
+          style="width: 18px; height: 18px;"
+        />
+        <label for="available" style="margin: 0; cursor: pointer;">Món ăn đang mở bán (Available)</label>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 22px;">
+        <button type="submit" class="sf-btn sf-btn-primary">
+          <%= mode === 'create' ? 'Tạo Món Ăn (POST)' : 'Lưu Thay Đổi (PATCH)' %>
+        </button>
+        <a href="/admin/dishes" class="sf-btn sf-btn-outline">Hủy bỏ</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

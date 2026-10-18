@@ -1,0 +1,77 @@
+<%- include('../partials/header', { pageTitle: 'Đơn hàng #SF-' + order.id }) %>
+
+<main class="container" style="padding-top: 28px; padding-bottom: 60px; max-width: 780px;">
+  <div class="sf-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--sf-border); padding-bottom: 16px; margin-bottom: 20px;">
+      <div>
+        <span class="sf-badge success" style="margin-bottom: 6px;">ĐẶT ĐƠN THÀNH CÔNG (PRG 303 REDIRECT)</span>
+        <h1 style="margin: 0; font-size: 1.5rem;">Đơn hàng #SF-<%= order.id %></h1>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-size: 0.82rem; color: var(--sf-muted);">Trạng thái hiện tại</div>
+        <div style="font-weight: 800; color: var(--sf-green); font-size: 1.05rem;">🛵 <%= order.status %></div>
+      </div>
+    </div>
+
+    <!-- Tiến trình giao hàng -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; text-align: center; font-size: 0.82rem;">
+      <div style="padding: 10px; background: #dcfce7; color: #15803d; border-radius: 8px; font-weight: 700;">1. Đã nhận đơn ✓</div>
+      <div style="padding: 10px; background: var(--sf-primary-light); color: var(--sf-primary-dark); border-radius: 8px; font-weight: 700;">2. Bếp đang nấu 🔥</div>
+      <div style="padding: 10px; background: #f1f5f9; color: #64748b; border-radius: 8px;">3. Tài xế lấy món</div>
+      <div style="padding: 10px; background: #f1f5f9; color: #64748b; border-radius: 8px;">4. Giao thành công</div>
+    </div>
+
+    <div style="background: #f8fafc; padding: 16px; border-radius: 10px; margin-bottom: 20px; font-size: 0.9rem;">
+      <div style="margin-bottom: 6px;"><strong>Người nhận:</strong> <%= order.customerName %> — <%= order.customerPhone %></div>
+      <div style="margin-bottom: 6px;"><strong>Địa chỉ giao:</strong> <%= order.address %></div>
+      <% if (order.note) { %>
+        <div><strong>Ghi chú:</strong> <%= order.note %></div>
+      <% } %>
+    </div>
+
+    <h3 style="margin: 0 0 12px; font-size: 1.05rem;">Chi tiết món đã đặt</h3>
+    <table class="sf-table" style="margin-bottom: 18px;">
+      <thead>
+        <tr>
+          <th>Món ăn</th>
+          <th>Đơn giá</th>
+          <th>SL</th>
+          <th style="text-align: right;">Thành tiền</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% order.items.forEach(item => { %>
+          <tr>
+            <td><a href="/dishes/<%= item.id %>" style="font-weight: 600; color: var(--sf-primary);"><%= item.name %></a></td>
+            <td><%= formatVND(item.price) %></td>
+            <td>x<%= item.qty %></td>
+            <td style="text-align: right; font-weight: 600;"><%= formatVND(item.price * item.qty) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <div style="max-width: 320px; margin-left: auto; font-size: 0.92rem;">
+      <div class="sf-summary-row"><span>Tạm tính:</span><strong><%= formatVND(order.subtotal) %></strong></div>
+      <div class="sf-summary-row"><span>Phí vận chuyển:</span><strong><%= formatVND(order.shippingFee) %></strong></div>
+      <% if (order.discount > 0) { %>
+        <div class="sf-summary-row" style="color: var(--sf-green);">
+          <span>Voucher (<%= order.voucherCode %>):</span>
+          <strong>-<%= formatVND(order.discount) %></strong>
+        </div>
+      <% } %>
+      <div class="sf-summary-row total">
+        <span>Tổng thanh toán:</span>
+        <span><%= formatVND(order.total) %></span>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; display: flex; justify-content: space-between;">
+      <a href="/orders" class="sf-btn sf-btn-outline">← Danh sách đơn hàng</a>
+      <a href="/dishes" class="sf-btn sf-btn-primary">Tiếp tục đặt món</a>
+    </div>
+  </div>
+</main>
+
+<script src="/public/cart.js"></script>
+<%- include('../partials/footer') %>

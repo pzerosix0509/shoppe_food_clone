@@ -1,0 +1,17 @@
+<%- include('../../partials/admin-header', { pageTitle: 'Xác nhận xóa Nguyên Liệu #' + ingredient.id, activeTab: 'ingredients' }) %>
+
+<main class="container" style="max-width: 560px; padding-bottom: 60px;">
+  <div class="sf-card" style="text-align: center; padding: 32px;">
+    <div style="font-size: 3rem; margin-bottom: 8px;">⚠️</div>
+    <h1 style="margin: 0 0 10px; font-size: 1.45rem;">Xác nhận xóa nguyên liệu?</h1>
+    <p style="color: var(--sf-muted); margin-bottom: 20px;">
+      Bạn có chắc chắn muốn xóa nguyên liệu <strong>#<%= ingredient.id %> - <%= ingredient.name %></strong> (<%= ingredient.unit %>) khỏi kho?
+    </p>
+    <form method="POST" action="/admin/ingredients/<%= ingredient.id %>?_method=DELETE" style="display: flex; justify-content: center; gap: 12px;">
+      <button type="submit" class="sf-btn sf-btn-danger">Xác nhận Xóa (DELETE)</button>
+      <a href="/admin/ingredients/<%= ingredient.id %>" class="sf-btn sf-btn-outline">Hủy bỏ</a>
+    </form>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>

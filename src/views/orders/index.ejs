@@ -1,0 +1,43 @@
+<%- include('../partials/header', { pageTitle: 'Lịch sử Đơn hàng' }) %>
+
+<main class="container" style="padding-top: 28px; padding-bottom: 60px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1 style="margin: 0; font-size: 1.55rem;">🛵 Đơn đặt món ShopeeFood gần đây</h1>
+    <a href="/dishes" class="sf-btn sf-btn-primary">+ Đặt thêm món mới</a>
+  </div>
+
+  <% if (orders.length === 0) { %>
+    <div class="sf-card" style="text-align: center; padding: 48px 20px;">
+      <div style="font-size: 3rem; margin-bottom: 10px;">📦</div>
+      <h3 style="margin: 0 0 8px;">Chưa có đơn hàng nào</h3>
+      <p style="color: var(--sf-muted); margin-bottom: 18px;">Hãy chọn món ngon tại trang Thực đơn để trải nghiệm đặt hàng nhé!</p>
+      <a href="/dishes" class="sf-btn sf-btn-primary">Khám phá Thực đơn ngay</a>
+    </div>
+  <% } else { %>
+    <% orders.forEach(order => { %>
+      <div class="sf-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+            <strong style="font-size: 1.05rem;">Đơn hàng #SF-<%= order.id %></strong>
+            <span class="sf-badge success"><%= order.status %></span>
+          </div>
+          <div style="color: var(--sf-muted); font-size: 0.88rem;">
+            👤 <%= order.customerName %> (<%= order.customerPhone %>) • 📍 <%= order.address %>
+          </div>
+          <div style="font-size: 0.85rem; margin-top: 6px;">
+            🍽️ <%= order.items.map(i => `${i.name} (x${i.qty})`).join(', ') %>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 1.2rem; font-weight: 800; color: var(--sf-primary); margin-bottom: 8px;">
+            <%= formatVND(order.total) %>
+          </div>
+          <a href="/orders/<%= order.id %>" class="sf-btn sf-btn-outline">Theo dõi đơn hàng →</a>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+</main>
+
+<script src="/public/cart.js"></script>
+<%- include('../partials/footer') %>

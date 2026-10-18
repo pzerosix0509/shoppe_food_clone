@@ -1,0 +1,56 @@
+<%- include('../../partials/admin-header', { pageTitle: mode === 'create' ? 'Thêm Nguyên Liệu' : 'Sửa Nguyên Liệu #' + ingredientId, activeTab: 'ingredients' }) %>
+
+<main class="container" style="max-width: 640px; padding-bottom: 60px;">
+  <div style="margin-bottom: 16px;">
+    <a href="/admin/ingredients" class="sf-btn sf-btn-outline">← Quay lại danh sách nguyên liệu</a>
+  </div>
+
+  <div class="sf-card">
+    <h1 style="margin: 0 0 6px; font-size: 1.45rem;">
+      <%= mode === 'create' ? '➕ Thêm Nguyên Liệu Mới' : '✏️ Cập Nhật Nguyên Liệu #' + ingredientId %>
+    </h1>
+    <p style="margin: 0 0 20px; color: var(--sf-muted); font-size: 0.88rem;">
+      Method: <code><%= mode === 'create' ? 'POST /admin/ingredients' : 'POST /admin/ingredients/' + ingredientId + '?_method=PATCH' %></code>
+    </p>
+
+    <% if (Object.keys(errors).length > 0) { %>
+      <div class="sf-alert-error">⚠️ Dữ liệu nhập chưa hợp lệ (HTTP 400 Bad Request).</div>
+    <% } %>
+
+    <form method="POST" action="<%= mode === 'create' ? '/admin/ingredients' : '/admin/ingredients/' + ingredientId + '?_method=PATCH' %>">
+      <div class="sf-form-group">
+        <label for="name">Tên nguyên liệu *</label>
+        <input id="name" type="text" name="name" class="sf-input" value="<%= values.name %>" placeholder="Ví dụ: Thịt bò thăn nội tươi" />
+        <% if (errors.name) { %><div class="sf-field-error"><%= errors.name %></div><% } %>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="sf-form-group">
+          <label for="unit">Đơn vị tính (unit) *</label>
+          <input id="unit" type="text" name="unit" class="sf-input" value="<%= values.unit %>" placeholder="kg, gram, lít, hộp..." />
+          <% if (errors.unit) { %><div class="sf-field-error"><%= errors.unit %></div><% } %>
+        </div>
+
+        <div class="sf-form-group">
+          <label for="stock">Số lượng tồn kho</label>
+          <input id="stock" type="number" name="stock" class="sf-input" value="<%= values.stock %>" />
+          <% if (errors.stock) { %><div class="sf-field-error"><%= errors.stock %></div><% } %>
+        </div>
+      </div>
+
+      <div class="sf-form-group">
+        <label for="origin">Nguồn gốc / Nhà cung cấp</label>
+        <input id="origin" type="text" name="origin" class="sf-input" value="<%= values.origin %>" placeholder="Trang trại VietGAP Đà Lạt" />
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button type="submit" class="sf-btn sf-btn-primary">
+          <%= mode === 'create' ? 'Tạo Nguyên Liệu (POST)' : 'Lưu Thay Đổi (PATCH)' %>
+        </button>
+        <a href="/admin/ingredients" class="sf-btn sf-btn-outline">Hủy</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include('../../partials/footer') %>
