@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopeeFood SPA (Block #6 - Client-Side Routing & REST API)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .spa-banner {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 0.8rem;
+      padding: 6px 0;
+      border-bottom: 1px solid #1e293b;
+    }
+    .spa-banner-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .spa-state-box {
+      background: #fff;
+      border: 1px solid var(--sf-border);
+      border-radius: var(--sf-radius);
+      padding: 48px 24px;
+      text-align: center;
+      max-width: 600px;
+      margin: 36px auto;
+      box-shadow: var(--sf-shadow);
+    }
+    .spa-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f4f6;
+      border-top-color: var(--sf-primary);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Thanh trạng thái kiến trúc SPA + REST API (Block #6) -->
+  <div class="spa-banner">
+    <div class="container spa-banner-inner">
+      <div>
+        <span class="sf-badge success" style="margin-right:6px;">BLOCK #6 SPA</span>
+        Chạy trong Browser • Client-Side Routing (History API) • Cross-Origin CORS
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <label for="api-base-url-input" style="color:#94a3b8;">API Endpoint:</label>
+        <input
+          id="api-base-url-input"
+          type="text"
+          style="background:#1e293b;color:#38bdf8;border:1px solid #334155;border-radius:6px;padding:3px 8px;font-size:0.78rem;width:210px;font-family:monospace;"
+        />
+        <button id="api-base-url-reset" type="button" style="background:#334155;color:#fff;border:none;border-radius:6px;padding:3px 8px;font-size:0.75rem;cursor:pointer;">
+          Mặc định
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Khung điều hướng chính -->
+  <div id="spa-navbar"></div>
+
+  <!-- Nơi render trang hiện tại theo URL -->
+  <div id="spa-root"></div>
+
+  <footer style="background:#fff;border-top:1px solid #e6e8ec;padding:28px 0;margin-top:48px;color:#656d76;font-size:0.86rem;">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <strong style="color:#ee4d2d;">ShopeeFood SPA (Block #6)</strong> — Tách biệt <code>web</code> (SPA) &amp; <code>api</code> (REST API JSON)
+      </div>
+      <div style="display:flex;gap:16px;">
+        <a href="/dishes" data-spa-link>Thực đơn (/dishes)</a>
+        <a href="/admin/dishes" data-spa-link>Admin Món ăn</a>
+        <a href="/admin/chefs" data-spa-link>Admin Đầu bếp</a>
+        <a href="/admin/ingredients" data-spa-link>Admin Nguyên liệu</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/api-client.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -2,6 +2,7 @@ const path = require("node:path");
 const express = require("express");
 const methodOverride = require("method-override");
 const { prisma } = require("./db");
+const { apiRouter } = require("./api-router");
 const {
   parsePositiveId,
   normalizeQueryString,
@@ -14,6 +15,9 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+// Mount Block #6 REST API at /api (handles its own CORS, JSON parsing, and 404/500)
+app.use("/api", apiRouter);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

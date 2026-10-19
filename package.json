@@ -1,13 +1,15 @@
 {
   "name": "shopeefood-web",
-  "version": "1.0.0",
-  "description": "ShopeeFood Full-Stack Web App (SSR + Interactive Cart + Admin CRUD for Dish, Chef, Ingredient)",
+  "version": "2.0.0",
+  "description": "ShopeeFood Full-Stack Web App (Block #5 SSR + Block #6 REST API & SPA)",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
+    "start:api": "node src/server.js --api-only",
+    "start:web": "node web/server.js",
     "dev": "node --watch src/server.js",
     "seed": "node src/seed.js",
-    "test": "node --test tests/app.test.js"
+    "test": "node --test --test-concurrency=1 tests/app.test.js tests/block6.test.js"
   },
   "dependencies": {
     "dotenv": "^16.4.7",

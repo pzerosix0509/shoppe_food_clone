@@ -103,6 +103,7 @@ function initSqlite() {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
 
   sqliteDb = new DatabaseSync(filePath);
+  sqliteDb.exec("PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000;");
   sqliteDb.exec(`
     CREATE TABLE IF NOT EXISTS dishes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
